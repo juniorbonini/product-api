@@ -1,7 +1,13 @@
 package com.api.product.model;
 
+import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 public class Product {
