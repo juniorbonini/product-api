@@ -2,6 +2,9 @@ package com.api.product.service;
 
 import java.util.List;
 import com.api.product.dto.*;
+import com.api.product.exception.GlobalExceptionHandler;
+import com.api.product.exception.NotFoundException;
+
 import java.util.stream.Collectors;
 import com.api.product.model.Product;
 import org.springframework.stereotype.Service;
@@ -34,14 +37,14 @@ public class ProductService {
 
   public ProductResponseDTO findById(Long id) {
     Product product = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
     return toResponseDTO(product);
   }
 
   public ProductResponseDTO update(Long id, ProductRequestDTO productDetails) {
     Product product = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
     product.setName(productDetails.getName());
     product.setPriceInCents(productDetails.getPriceInCents());
@@ -53,7 +56,7 @@ public class ProductService {
 
   public void delete(Long id) {
     Product product = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        .orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 
     productRepository.delete(product);
   }
