@@ -1,10 +1,11 @@
 package com.api.product.controller;
 
 import java.util.List;
-import com.api.product.model.Product;
+
+import com.api.product.dto.*;
+import jakarta.validation.Valid;
 import com.api.product.service.ProductService;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.beans.factory.annotation.*;
 
 @RestController
@@ -14,23 +15,23 @@ public class ProductController {
   private ProductService service;
 
   @PostMapping()
-  public void create(@RequestBody Product product) {
-    service.create(product);
+  public ProductResponseDTO create(@Valid @RequestBody ProductRequestDTO dto) {
+    return service.create(dto);
   }
 
   @GetMapping
-  public List<Product> findAll() {
+  public List<ProductResponseDTO> findAll() {
     return service.getAll();
   }
 
   @GetMapping("/{id}")
-  public Product findOne(@PathVariable Long id) {
+  public ProductResponseDTO findOne(@PathVariable Long id) {
     return service.findById(id);
   }
 
   @PutMapping("/{id}")
-  public Product updateOne(@PathVariable Long id, @RequestBody Product productDetails) {
-    return service.update(id, productDetails);
+  public ProductResponseDTO updateOne(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO dto) {
+    return service.update(id, dto);
   }
 
   @DeleteMapping("/{id}")

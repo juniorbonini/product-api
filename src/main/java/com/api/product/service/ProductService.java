@@ -1,10 +1,10 @@
 package com.api.product.service;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
+import com.api.product.dto.*;
+import java.util.stream.Collectors;
 import com.api.product.model.Product;
+import org.springframework.stereotype.Service;
 import com.api.product.repository.ProductRepository;
 
 @Service
@@ -15,29 +15,40 @@ public class ProductService {
     this.productRepository = productRepository;
   }
 
-  public void create(Product product) {
-    productRepository.save(product);
+  public ProductResponseDTO create(ProductRequestDTO dto) {
+    Product product = new Product();
+    product.setName(dto.getName());
+    product.setPriceInCents(dto.getPriceInCents());
+
+    Product saved = productRepository.save(product);
+
+    return toResponseDTO(saved);
   }
 
-  public List<Product> getAll() {
-    return productRepository.findAll();
+  public List<ProductResponseDTO> getAll() {
+    return productRepository.findAll()
+        .stream()
+        .map(this::toResponseDTO)
+        .collect(Collectors.toList());
   }
 
-  public Product findById(Long id) {
+  public ProductResponseDTO findById(Long id) {
     Product product = productRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-    return product;
+    return toResponseDTO(product);
   }
 
-  public Product update(Long id, Product productDetails) {
+  public ProductResponseDTO update(Long id, ProductRequestDTO productDetails) {
     Product product = productRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
     product.setName(productDetails.getName());
     product.setPriceInCents(productDetails.getPriceInCents());
 
-    return productRepository.save(product);
+    Product updated = productRepository.save(product);
+
+    return toResponseDTO(updated);
   }
 
   public void delete(Long id) {
@@ -45,5 +56,13 @@ public class ProductService {
         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
     productRepository.delete(product);
+  }
+
+  public ProductResponseDTO toResponseDTO(Product product) {
+    ProductResponseDTO dto = new ProductResponseDTO();
+    dto.setId(product.getId());
+    dto.setName(product.getName());
+    dto.setPriceInCents(product.getPriceInCents());
+    return dto;
   }
 }
