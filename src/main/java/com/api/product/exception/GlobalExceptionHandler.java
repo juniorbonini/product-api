@@ -1,10 +1,12 @@
 package com.api.product.exception;
 
-import java.util.HashMap;
 import java.util.Map;
-
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import com.api.errors.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,11 +15,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<Map<String, String>> globalExceptionHandler(NotFoundException ex) {
-    Map<String, String> errorResponse = new HashMap<>();
-    errorResponse.put("error", ex.getMessage());
+  public ResponseEntity<ApiErrorResponse> notFoundExceptionHandler(
+      NotFoundException ex,
+      HttpServletRequest request) {
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    ApiErrorResponse error = new ApiErrorResponse(
+        LocalDateTime.now().toString(),
+        HttpStatus.NOT_FOUND.value(),
+        HttpStatus.NOT_FOUND.getReasonPhrase(),
+        ex.getMessage(),
+        request.getRequestURI());
+
+    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -30,4 +39,3 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
   }
 }
-
