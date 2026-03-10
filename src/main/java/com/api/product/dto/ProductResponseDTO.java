@@ -2,6 +2,7 @@ package com.api.product.dto;
 
 import java.time.LocalDateTime;
 
+import com.api.product.enums.ProductType;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class ProductResponseDTO {
   private Integer priceInCents;
   private Integer inStockQuantity;
   private Boolean available;
-  private String type;
+  private ProductType type;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }
