@@ -2,12 +2,10 @@ package com.api.product.service;
 
 import java.util.List;
 import com.api.product.dto.*;
-import com.api.product.exception.GlobalExceptionHandler;
-import com.api.product.exception.NotFoundException;
-
 import java.util.stream.Collectors;
 import com.api.product.model.Product;
 import org.springframework.stereotype.Service;
+import com.api.product.exception.NotFoundException;
 import com.api.product.repository.ProductRepository;
 
 @Service
