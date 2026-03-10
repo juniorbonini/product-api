@@ -22,6 +22,5 @@ public class ProductRequestDTO {
 
   @PositiveOrZero(message = "Quantidade em estoque deve ser números positivos")
   private Integer inStockQuantity;
-  private Boolean available;
   private String type;
 }
