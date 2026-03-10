@@ -14,6 +14,10 @@ import com.api.product.repository.ProductRepository;
 public class ProductService {
   private ProductRepository productRepository;
 
+  private boolean calculateAvailability(Integer stock) {
+    return stock != null && stock > 0;
+  }
+
   public ProductService(ProductRepository productRepository) {
     this.productRepository = productRepository;
   }
@@ -22,7 +26,7 @@ public class ProductService {
     Product product = new Product();
     product.setName(dto.getName());
     product.setType(dto.getType());
-    product.setAvailable(dto.getAvailable());
+    product.setAvailable(calculateAvailability(dto.getInStockQuantity()));
     product.setCreatedAt(LocalDateTime.now());
     product.setDescription(dto.getDescription());
     product.setUpdatedAt(product.getUpdatedAt());
@@ -32,6 +36,8 @@ public class ProductService {
     if (product.getInStockQuantity() <= 0) {
       throw new ProductOutOfStock("Produto fora de estoque");
     }
+
+
 
     Product saved = productRepository.save(product);
 
@@ -59,7 +65,6 @@ public class ProductService {
     product.setName(productDetails.getName());
     product.setPriceInCents(productDetails.getPriceInCents());
     product.setDescription(productDetails.getDescription());
-    product.setAvailable(productDetails.getAvailable());
     product.setInStockQuantity(productDetails.getInStockQuantity());
     product.setType(productDetails.getType());
     product.setUpdatedAt(LocalDateTime.now());
@@ -81,12 +86,12 @@ public class ProductService {
     dto.setId(product.getId());
     dto.setType(product.getType());
     dto.setName(product.getName());
-    dto.setAvailable(product.getAvailable());
     dto.setCreatedAt(product.getCreatedAt());
     dto.setUpdatedAt(product.getUpdatedAt());
     dto.setDescription(product.getDescription());
     dto.setPriceInCents(product.getPriceInCents());
     dto.setInStockQuantity(product.getInStockQuantity());
+    dto.setAvailable(calculateAvailability(product.getInStockQuantity()));
     return dto;
   }
 }
