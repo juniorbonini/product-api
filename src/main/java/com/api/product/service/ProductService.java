@@ -21,12 +21,13 @@ public class ProductService {
   public ProductResponseDTO create(ProductRequestDTO dto) {
     Product product = new Product();
     product.setName(dto.getName());
-    product.setDescription(dto.getDescription());
-    product.setCreatedAt(LocalDateTime.now());
-    product.setInStockQuantity(dto.getInStockQuantity());
     product.setType(dto.getType());
     product.setAvailable(dto.getAvailable());
+    product.setCreatedAt(LocalDateTime.now());
+    product.setDescription(dto.getDescription());
+    product.setUpdatedAt(product.getUpdatedAt());
     product.setPriceInCents(dto.getPriceInCents());
+    product.setInStockQuantity(dto.getInStockQuantity());
 
     if (product.getInStockQuantity() <= 0) {
       throw new ProductOutOfStock("Produto fora de estoque");
@@ -57,6 +58,10 @@ public class ProductService {
 
     product.setName(productDetails.getName());
     product.setPriceInCents(productDetails.getPriceInCents());
+    product.setDescription(productDetails.getDescription());
+    product.setAvailable(productDetails.getAvailable());
+    product.setInStockQuantity(productDetails.getInStockQuantity());
+    product.setType(productDetails.getType());
     product.setUpdatedAt(LocalDateTime.now());
 
     Product updated = productRepository.save(product);
@@ -74,13 +79,14 @@ public class ProductService {
   public ProductResponseDTO toResponseDTO(Product product) {
     ProductResponseDTO dto = new ProductResponseDTO();
     dto.setId(product.getId());
+    dto.setType(product.getType());
     dto.setName(product.getName());
-    dto.setPriceInCents(product.getPriceInCents());
-    dto.setDescription(product.getDescription());
     dto.setAvailable(product.getAvailable());
     dto.setCreatedAt(product.getCreatedAt());
+    dto.setUpdatedAt(product.getUpdatedAt());
+    dto.setDescription(product.getDescription());
+    dto.setPriceInCents(product.getPriceInCents());
     dto.setInStockQuantity(product.getInStockQuantity());
-    dto.setType(product.getType());
     return dto;
   }
 }
