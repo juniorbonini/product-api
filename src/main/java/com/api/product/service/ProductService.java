@@ -27,9 +27,8 @@ public class ProductService {
     product.setName(dto.getName());
     product.setType(dto.getType());
     product.setAvailable(calculateAvailability(dto.getInStockQuantity()));
-    product.setCreatedAt(LocalDateTime.now());
+    product.prePersist();
     product.setDescription(dto.getDescription());
-    product.setUpdatedAt(product.getUpdatedAt());
     product.setPriceInCents(dto.getPriceInCents());
     product.setInStockQuantity(dto.getInStockQuantity());
 
@@ -67,7 +66,7 @@ public class ProductService {
     product.setDescription(productDetails.getDescription());
     product.setInStockQuantity(productDetails.getInStockQuantity());
     product.setType(productDetails.getType());
-    product.setUpdatedAt(LocalDateTime.now());
+    product.preUpdate();
 
     Product updated = productRepository.save(product);
 
