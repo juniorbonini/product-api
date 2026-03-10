@@ -27,4 +27,14 @@ public class Product {
   private Integer inStockQuantity;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+
+  @PrePersist
+  public void prePersist() {
+    this.createdAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  public void preUpdate() {
+    this.updatedAt = LocalDateTime.now();
+  }
 }
