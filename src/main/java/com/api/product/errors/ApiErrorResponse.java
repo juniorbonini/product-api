@@ -1,4 +1,4 @@
-package com.api.errors;
+package com.api.product.errors;
 
 import lombok.Getter;
 

@@ -15,4 +15,13 @@ public class ProductRequestDTO {
 
   @Positive(message = "O preço do produto precisa ser maior que 0")
   private Integer priceInCents;
+
+  @NotBlank(message = "A descrição deve conter no mínimo 10 caracteres")
+  @Column(length = 300)
+  private String description;
+
+  @PositiveOrZero(message = "Quantidade em estoque deve ser números positivos")
+  private Integer inStockQuantity;
+  private Boolean available;
+  private String type;
 }
